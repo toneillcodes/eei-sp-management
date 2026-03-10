@@ -5,8 +5,8 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 # prompt for hostname/port and credentials
-host = getpass.getpass("Carbon Console Hostname/Port: ").strip()
-admin = getpass.getpass("Carbon Console Admin: ").strip()
+host = input("Carbon Console Hostname/Port: ")
+admin = input("Carbon Console Admin: ")
 password = getpass.getpass("Carbon Console Password: ").strip()
 
 # build authentication object from credentials
