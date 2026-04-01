@@ -1,11 +1,13 @@
 import os
+import getpass
+import urllib3
 import requests
 from requests.auth import HTTPBasicAuth
 
 host = input("Carbon Console Hostname/Port: ")
 
 admin = input("Carbon Console Admin: ")
-password = input("Carbon Console Password: ")
+password = getpass.getpass("Carbon Console Password: ").strip()
 basic = HTTPBasicAuth(admin, password)
 
 upload_dir = input("XML Upload Directory: ")
@@ -13,12 +15,14 @@ upload_dir = input("XML Upload Directory: ")
 successful_loads = 0
 failed_loads = 0
 
+urllib3.disable_warnings()
+
 for filename in os.listdir(upload_dir):
     if filename.endswith(".xml"):
         print("Processing " + filename)
         fullpath = upload_dir + '\\' + filename
         upload_file = {'file': open(fullpath,'rb')}
-        req_url = 'https://' + host + '/t/carbon.super/api/server/v1/applications/import'
+        req_url = 'https://' + host + '/t/carbon.super/api/server/v1/applications/import'        
         upload_response = requests.post(req_url, auth=basic, verify=False, files=upload_file)
         print(upload_response.status_code)
         if(upload_response.status_code == 200 or upload_response.status_code == 201):
@@ -33,6 +37,7 @@ for filename in os.listdir(upload_dir):
         else:
             print("Failed to load " + filename + ". Maybe the application exists??")
             print("Response code:" + str(upload_response.status_code))
+            print("Response body: " + upload_response.text)
             failed_loads += 1
 print("Import complete, stats below")
 print("Successful Loads: " + str(successful_loads))
