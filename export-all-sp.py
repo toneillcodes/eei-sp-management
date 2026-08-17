@@ -2,6 +2,7 @@ import json
 import getpass
 import urllib3
 import requests
+from pathlib import Path
 from requests.auth import HTTPBasicAuth
 
 # prompt for hostname/port and credentials
@@ -14,6 +15,7 @@ basic = HTTPBasicAuth(admin, password)
 
 # prompt for the download directory
 download_dir = input("XML Download Directory: ")
+download_path = Path(download_dir)
 
 # initialize an empty app list
 all_applications = []
@@ -78,7 +80,7 @@ if(app_check.status_code == 200 or app_check.status_code == 201):
                     #print(res_export.status_code)
                     if(res_export.status_code == 200):
                         #print(res_export.text)
-                        filename = download_dir + '\\' + app['name'] + '.xml'
+                        filename = download_path / f"{app['name']}.xml"
                         f = open(filename, 'w')
                         f.write(res_export.text)
                         f.close()
