@@ -21,21 +21,7 @@ print("Performing intial query")
 urllib3.disable_warnings()
 
 payload = {
-    "authenticationSequence": {
-        "type": "USER_DEFINED",
-        "steps": [
-            {
-                "id": 1,
-                "options": [
-                    {"authenticator": "SAMLSSOAuthenticator", "idp": "Entra ID"}
-                ]
-            }
-        ],
-        "requestPathAuthenticators": [],
-        "subjectStepId": 1,
-        "attributeStepId": 1,
-        "script": "var onLoginRequest = function(context) {\n    executeStep(1);\n};\n"
-    }
+  "templateId": "custom-protocol-application"
 }
 
 req_url = 'https://' + host + '/t/carbon.super/api/server/v1/applications'  
